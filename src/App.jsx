@@ -11,29 +11,38 @@ import {
   Terminal,
   FileSpreadsheet,
   Layout,
-  Users,
   Mic,
   Briefcase
 } from 'lucide-react';
+
+// Warna Custom
+// Background: #F0E7D5 (Cream/Vanilla)
+// Foreground: #212842 (Navy/Dark)
 
 // --- COMPONENTS ---
 
 // 1. Project Card 
 const ProjectCard = ({ project }) => (
-  <div className="group relative bg-white rounded-2xl border border-zinc-200 p-6 hover:border-zinc-900 transition-all duration-300 hover:shadow-xl flex flex-col justify-between h-full">
+  <div className="group relative bg-[#F0E7D5] rounded-2xl border border-[#212842]/20 p-6 hover:border-[#212842] transition-all duration-300 hover:shadow-[4px_4px_0px_0px_#212842] flex flex-col justify-between h-full">
     <div>
       <div className="flex justify-between items-start mb-4">
-        <div className="p-3 rounded-xl bg-zinc-50 border border-zinc-100 group-hover:bg-zinc-900 group-hover:text-white transition-colors">
+        <div className="p-3 rounded-xl bg-[#212842]/5 border border-[#212842]/10 group-hover:bg-[#212842] group-hover:text-[#F0E7D5] transition-colors text-[#212842]">
           {project.icon}
         </div>
-        <a href="#" className="text-zinc-400 hover:text-black transition-colors">
+        <a 
+          href={project.link} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="text-[#212842]/60 hover:text-[#212842] transition-colors cursor-pointer"
+          title="View Project"
+        >
           <ArrowUpRight size={20} />
         </a>
       </div>
-      <h3 className="text-xl font-bold text-zinc-900 mb-2 group-hover:underline decoration-1 underline-offset-4">
+      <h3 className="text-xl font-bold text-[#212842] mb-2 group-hover:underline decoration-2 underline-offset-4">
         {project.title}
       </h3>
-      <p className="text-zinc-500 text-sm leading-relaxed mb-4">
+      <p className="text-[#212842]/80 text-sm leading-relaxed mb-4 font-medium">
         {project.description}
       </p>
     </div>
@@ -41,29 +50,29 @@ const ProjectCard = ({ project }) => (
     <div>
       <div className="flex flex-wrap gap-2 mt-auto">
         {project.tags.map((tag, i) => (
-          <span key={i} className="px-3 py-1 bg-white border border-zinc-200 rounded-full text-xs font-medium text-zinc-600">
+          <span key={i} className="px-3 py-1 bg-transparent border border-[#212842]/30 rounded-full text-xs font-bold text-[#212842] group-hover:bg-[#212842] group-hover:text-[#F0E7D5] transition-colors">
             {tag}
           </span>
         ))}
       </div>
-      <div className="mt-4 pt-4 border-t border-zinc-100 flex justify-between items-center">
-        <span className="text-xs font-bold text-zinc-900 tracking-wider uppercase">Focus</span>
-        <span className="text-sm font-medium text-zinc-600">{project.focus}</span>
+      <div className="mt-4 pt-4 border-t border-[#212842]/10 flex justify-between items-center">
+        <span className="text-xs font-bold text-[#212842] tracking-wider uppercase">Focus</span>
+        <span className="text-sm font-semibold text-[#212842]/80">{project.focus}</span>
       </div>
     </div>
   </div>
 );
 
-// 2. Experience Row (Organization History)
+// 2. Experience Row
 const ExperienceRow = ({ role, org, period, desc }) => (
-  <div className="relative pl-8 pb-10 border-l border-zinc-200 last:pb-0 last:border-none">
-    <div className="absolute -left-[5px] top-2 w-2.5 h-2.5 rounded-full bg-zinc-900 ring-4 ring-white"></div>
+  <div className="relative pl-8 pb-10 border-l-2 border-[#212842]/20 last:pb-0 last:border-none">
+    <div className="absolute -left-[6.5px] top-2 w-3 h-3 rounded-full bg-[#212842] ring-4 ring-[#F0E7D5]"></div>
     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-2">
-      <h3 className="text-lg font-bold text-zinc-900">{role}</h3>
-      <span className="text-xs font-mono text-zinc-500 bg-zinc-50 px-2 py-1 rounded">{period}</span>
+      <h3 className="text-lg font-bold text-[#212842]">{role}</h3>
+      <span className="text-xs font-mono text-[#F0E7D5] bg-[#212842] px-2 py-1 rounded font-bold">{period}</span>
     </div>
-    <div className="text-sm font-semibold text-zinc-700 mb-2">{org}</div>
-    <p className="text-zinc-500 text-sm leading-relaxed max-w-2xl">
+    <div className="text-sm font-bold text-[#212842]/80 mb-2">{org}</div>
+    <p className="text-[#212842]/80 text-sm leading-relaxed max-w-2xl font-medium">
       {desc}
     </p>
   </div>
@@ -71,9 +80,9 @@ const ExperienceRow = ({ role, org, period, desc }) => (
 
 // 3. Skill Badge
 const SkillBadge = ({ icon: Icon, name }) => (
-  <div className="flex items-center gap-2 px-4 py-3 bg-white rounded-xl border border-zinc-200 hover:border-zinc-900 transition-colors cursor-default group">
-    <Icon size={18} className="text-zinc-400 group-hover:text-zinc-900 transition-colors" />
-    <span className="text-sm font-medium text-zinc-800">{name}</span>
+  <div className="flex items-center gap-2 px-4 py-3 bg-[#F0E7D5] rounded-xl border-2 border-[#212842]/20 hover:border-[#212842] hover:shadow-[2px_2px_0px_0px_#212842] transition-all cursor-default group">
+    <Icon size={18} className="text-[#212842]/70 group-hover:text-[#212842] transition-colors" />
+    <span className="text-sm font-bold text-[#212842]">{name}</span>
   </div>
 );
 
@@ -89,8 +98,7 @@ const App = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // --- DATA FROM CV (UPDATED) ---
-  
+  // --- DATA ---
   const projects = [
     {
       id: 1,
@@ -99,7 +107,8 @@ const App = () => {
       description: "End-to-end analysis for a pizza restaurant case study. Performed data cleaning with Pandas, conducted EDA to identify purchasing patterns, and created visualizations to support business decision-making.",
       tags: ["Python", "Excel", "EDA", "Visualization"],
       focus: "Business Insights",
-      icon: <BarChart3 size={24} />
+      icon: <BarChart3 size={24} />,
+      link: "#" 
     },
     {
       id: 2,
@@ -108,7 +117,8 @@ const App = () => {
       description: "Full-stack development for a church community internal project. Designed user-friendly UI/UX and integrated a database system for managing attendance data efficienty.",
       tags: ["UI/UX", "Frontend", "Database"],
       focus: "System Integration",
-      icon: <Layout size={24} />
+      icon: <Layout size={24} />,
+      link: "https://github.com/Muiz-Isman/Growchildren-Management-System.git"
     },
     {
       id: 3,
@@ -117,7 +127,8 @@ const App = () => {
       description: "Built a web-based platform for organizational activity management. Integrated registration systems with a database to store event information securely.",
       tags: ["PHP", "MySQL", "Web Programming"],
       focus: "Event Management",
-      icon: <Code2 size={24} />
+      icon: <Code2 size={24} />,
+      link: "https://github.com/Muiz-Isman/WebProg_Lec.git"
     },
     {
       id: 4,
@@ -126,7 +137,8 @@ const App = () => {
       description: "Managing and developing digital systems as Head of IT. Ensuring website content updates and maintenance using WordPress to keep appearance relevant.",
       tags: ["WordPress", "IT Management", "Leadership"],
       focus: "Digital Operations",
-      icon: <Terminal size={24} />
+      icon: <Terminal size={24} />,
+      link: "https://ultimagz.com/"
     }
   ];
 
@@ -156,46 +168,46 @@ const App = () => {
     : projects.filter(p => p.category === activeFilter);
 
   return (
-    <div className="min-h-screen bg-white font-sans text-zinc-900 selection:bg-zinc-900 selection:text-white relative">
+    <div className="min-h-screen bg-[#F0E7D5] font-sans text-[#212842] selection:bg-[#212842] selection:text-[#F0E7D5] relative">
       
       {/* Navbar */}
-      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-md border-b border-zinc-100 py-4' : 'bg-transparent py-6'}`}>
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-[#F0E7D5]/90 backdrop-blur-md border-b border-[#212842]/10 py-4' : 'bg-transparent py-6'}`}>
         <div className="max-w-5xl mx-auto px-6 flex justify-between items-center">
           <div className="text-lg font-bold tracking-tighter flex items-center gap-2">
-            <div className="w-3 h-3 bg-zinc-900 rounded-sm rotate-45"></div>
+            <div className="w-3 h-3 bg-[#212842] rotate-45"></div>
             MU'IZ ISMAN
           </div>
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-500">
-            <a href="#about" className="hover:text-zinc-900 transition-colors">About</a>
-            <a href="#work" className="hover:text-zinc-900 transition-colors">Projects</a>
-            <a href="#experience" className="hover:text-zinc-900 transition-colors">Experience</a>
-            <a href="#contact" className="px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors">Contact</a>
+          <div className="hidden md:flex items-center gap-8 text-sm font-bold text-[#212842]/60">
+            <a href="#about" className="hover:text-[#212842] transition-colors">About</a>
+            <a href="#work" className="hover:text-[#212842] transition-colors">Projects</a>
+            <a href="#experience" className="hover:text-[#212842] transition-colors">Experience</a>
+            <a href="#contact" className="px-5 py-2 bg-[#212842] text-[#F0E7D5] rounded-lg hover:bg-[#212842]/90 transition-colors shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]">Contact</a>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <header className="pt-40 pb-20 px-6">
+      <header id="about" className="pt-44 pb-24 px-6">
         <div className="max-w-5xl mx-auto">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-50 border border-zinc-200 mb-6">
-              <span className="w-2 h-2 bg-zinc-900 rounded-full"></span>
-              <span className="text-xs font-bold text-zinc-600 tracking-wide uppercase">Data Analyst & CS Student</span>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#212842]/5 border border-[#212842]/20 mb-8">
+              <span className="w-2 h-2 bg-[#212842] rounded-full"></span>
+              <span className="text-xs font-bold text-[#212842] tracking-wide uppercase">Data Analyst & CS Student</span>
             </div>
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-zinc-900 mb-8 leading-[1.1]">
+            <h1 className="text-5xl md:text-7xl font-black tracking-tight text-[#212842] mb-8 leading-[1.1]">
               Translating Data into <br/>
-              <span className="text-zinc-400">Clear Narratives.</span>
+              <span className="text-[#212842]/60">Clear Narratives.</span>
             </h1>
-            <p className="text-xl text-zinc-500 leading-relaxed max-w-2xl mb-10">
+            <p className="text-xl text-[#212842]/80 leading-relaxed max-w-2xl mb-10 font-medium">
               Hi, I'm <b>Muhammad Mu'iz Isman</b>. A 5th-semester Informatics student specializing in Data Analysis. 
               I combine technical skills in Python & SQL with strong communication abilities to bridge the gap between data and decision-making.
             </p>
             <div className="flex flex-wrap gap-4">
-              <a href="#work" className="px-8 py-4 bg-zinc-900 text-white rounded-xl font-medium hover:bg-zinc-800 transition-all flex items-center gap-2 group">
+              <a href="#work" className="px-8 py-4 bg-[#212842] text-[#F0E7D5] rounded-xl font-bold hover:translate-y-[-2px] hover:shadow-[4px_4px_0px_0px_rgba(33,40,66,0.3)] transition-all flex items-center gap-2 group">
                 View Projects
                 <ChevronDown size={18} className="group-hover:translate-y-1 transition-transform" />
               </a>
-              <a href="https://www.linkedin.com/in/muiz-isman" target="_blank" rel="noreferrer" className="px-8 py-4 bg-white border border-zinc-200 text-zinc-900 rounded-xl font-medium hover:bg-zinc-50 transition-all">
+              <a href="https://www.linkedin.com/in/muiz-isman" target="_blank" rel="noreferrer" className="px-8 py-4 bg-transparent border-2 border-[#212842] text-[#212842] rounded-xl font-bold hover:bg-[#212842] hover:text-[#F0E7D5] transition-all">
                 LinkedIn
               </a>
             </div>
@@ -204,27 +216,26 @@ const App = () => {
       </header>
 
       {/* Quick Stats */}
-      <section className="py-10 px-6 border-y border-zinc-100 bg-zinc-50/30">
+      <section className="py-12 px-6 border-y border-[#212842]/10 bg-[#212842]/5">
         <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
           {[
-            // { label: "Current GPA", value: "3.73" }, // Updated from CV
             { label: "Semester", value: "5th" },
             { label: "Focus", value: "Data Analysis" },
             { label: "Location", value: "Tangerang" }
           ].map((stat, idx) => (
             <div key={idx} className="flex flex-col">
-              <span className="text-2xl md:text-3xl font-bold text-zinc-900 tracking-tight">{stat.value}</span>
-              <span className="text-xs text-zinc-500 font-medium uppercase tracking-wider mt-1">{stat.label}</span>
+              <span className="text-3xl font-black text-[#212842] tracking-tight">{stat.value}</span>
+              <span className="text-xs text-[#212842]/60 font-bold uppercase tracking-wider mt-1">{stat.label}</span>
             </div>
           ))}
         </div>
       </section>
 
       {/* Skills */}
-      <section className="py-20 px-6">
+      <section className="py-24 px-6">
         <div className="max-w-5xl mx-auto">
-          <div className="mb-8">
-            <h2 className="text-xl font-bold text-zinc-900">Technical Proficiency</h2>
+          <div className="mb-10">
+            <h2 className="text-xl font-bold text-[#212842]">Technical Proficiency</h2>
           </div>
           <div className="flex flex-wrap gap-3">
             <SkillBadge icon={Code2} name="Python (Pandas, Matplotlib)" />
@@ -238,26 +249,26 @@ const App = () => {
       </section>
 
       {/* Projects Section */}
-      <section id="work" className="py-20 px-6 bg-zinc-50">
+      <section id="work" className="py-24 px-6 bg-[#212842]/5">
         <div className="max-w-5xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-zinc-900 tracking-tight mb-4">Featured Projects</h2>
-              <p className="text-zinc-500 max-w-md">
+              <h2 className="text-3xl md:text-4xl font-black text-[#212842] tracking-tight mb-4">Featured Projects</h2>
+              <p className="text-[#212842]/70 max-w-md font-medium">
                 A selection of my work in data analysis, web development, and system management.
               </p>
             </div>
             
             {/* Filter */}
-            <div className="flex bg-white p-1 rounded-xl border border-zinc-200 shadow-sm">
+            <div className="flex bg-[#F0E7D5] p-1.5 rounded-xl border border-[#212842]/20">
               {['All', 'Data Analysis', 'Web Dev'].map((filter) => (
                 <button
                   key={filter}
                   onClick={() => setActiveFilter(filter)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  className={`px-5 py-2 rounded-lg text-sm font-bold transition-all ${
                     activeFilter === filter 
-                      ? 'bg-zinc-900 text-white shadow-sm' 
-                      : 'text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50'
+                      ? 'bg-[#212842] text-[#F0E7D5] shadow-md' 
+                      : 'text-[#212842]/60 hover:text-[#212842] hover:bg-[#212842]/10'
                   }`}
                 >
                   {filter}
@@ -267,7 +278,7 @@ const App = () => {
           </div>
 
           {/* Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {filteredProjects.map((project) => (
               <ProjectCard key={project.id} project={project} />
             ))}
@@ -276,16 +287,16 @@ const App = () => {
       </section>
 
       {/* Experience Section */}
-      <section id="experience" className="py-20 px-6">
+      <section id="experience" className="py-24 px-6">
         <div className="max-w-5xl mx-auto">
-          <div className="flex flex-col md:flex-row gap-12">
+          <div className="flex flex-col md:flex-row gap-16">
             <div className="md:w-1/3">
-              <h2 className="text-3xl font-bold text-zinc-900 mb-4">Leadership & <br/>Organization</h2>
-              <p className="text-zinc-500 mb-6">
+              <h2 className="text-3xl font-black text-[#212842] mb-6">Leadership & <br/>Organization</h2>
+              <p className="text-[#212842]/70 mb-8 font-medium">
                 Beyond code and data, I actively contribute to organizations, refining my leadership and communication skills.
               </p>
-              <div className="p-6 bg-zinc-900 rounded-2xl text-zinc-400 text-sm">
-                <Briefcase className="text-white mb-3" size={24} />
+              <div className="p-6 bg-[#212842] rounded-2xl text-[#F0E7D5] text-sm shadow-[8px_8px_0px_0px_rgba(0,0,0,0.1)]">
+                <Briefcase className="text-[#F0E7D5] mb-3" size={24} />
                 "I believe effective data analysis requires not just technical skills, but the ability to communicate insights clearly."
               </div>
             </div>
@@ -300,31 +311,31 @@ const App = () => {
       </section>
 
       {/* Contact Footer */}
-      <footer id="contact" className="py-24 px-6 border-t border-zinc-100 bg-zinc-50/50">
+      <footer id="contact" className="py-24 px-6 border-t border-[#212842]/10 bg-[#212842]">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-zinc-900 mb-6">Ready to Contribute</h2>
-          <p className="text-zinc-500 mb-10 text-lg">
+          <h2 className="text-3xl font-bold text-[#F0E7D5] mb-8">Ready to Contribute</h2>
+          <p className="text-[#F0E7D5]/80 mb-12 text-lg max-w-xl mx-auto">
             Currently committed to deepening my data analysis skills and ready to contribute in a data-driven corporate environment.
           </p>
           
-          <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12">
-             <a href="mailto:muizisman511@gmail.com" className="flex items-center justify-center gap-2 px-6 py-3 bg-zinc-900 text-white rounded-full hover:bg-zinc-800 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
+          <div className="flex flex-col sm:flex-row justify-center gap-4 mb-16">
+             <a href="mailto:muizisman511@gmail.com" className="flex items-center justify-center gap-2 px-8 py-4 bg-[#F0E7D5] text-[#212842] rounded-full font-bold hover:bg-white transition-all shadow-[0_0_20px_rgba(240,231,213,0.3)] hover:-translate-y-1">
                <Mail size={18} />
                muizisman511@gmail.com
              </a>
-             <a href="https://www.linkedin.com/in/muiz-isman" target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 px-6 py-3 bg-white border border-zinc-200 text-zinc-700 rounded-full hover:border-zinc-900 hover:text-zinc-900 transition-all">
+             <a href="https://www.linkedin.com/in/muiz-isman" target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 px-8 py-4 bg-transparent border border-[#F0E7D5]/30 text-[#F0E7D5] rounded-full font-bold hover:bg-[#F0E7D5] hover:text-[#212842] transition-all">
                <Linkedin size={18} />
                LinkedIn Profile
              </a>
-             <a href="https://github.com/Muiz-Isman" target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 px-6 py-3 bg-white border border-zinc-200 text-zinc-700 rounded-full hover:border-zinc-900 hover:text-zinc-900 transition-all">
+             <a href="https://github.com/Muiz-Isman" target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 px-8 py-4 bg-transparent border border-[#F0E7D5]/30 text-[#F0E7D5] rounded-full font-bold hover:bg-[#F0E7D5] hover:text-[#212842] transition-all">
                <Github size={18} />
                GitHub
              </a>
           </div>
           
-          <div className="text-zinc-400 text-sm flex flex-col items-center gap-2">
+          <div className="text-[#F0E7D5]/40 text-sm flex flex-col items-center gap-2">
             <p>© {new Date().getFullYear()} Muhammad Mu'iz Isman.</p>
-            <p className="text-xs text-zinc-300">Tangerang, Indonesia • +62813 1754 9621</p>
+            <p className="text-xs opacity-60">Tangerang, Indonesia • +62813 1754 9621</p>
           </div>
         </div>
       </footer>
