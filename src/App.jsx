@@ -207,7 +207,7 @@ const App = () => {
       <section className="py-10 px-6 border-y border-zinc-100 bg-zinc-50/30">
         <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
           {[
-            { label: "Current GPA", value: "3.73" }, // Updated from CV
+            // { label: "Current GPA", value: "3.73" }, // Updated from CV
             { label: "Semester", value: "5th" },
             { label: "Focus", value: "Data Analysis" },
             { label: "Location", value: "Tangerang" }
