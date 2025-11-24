@@ -166,13 +166,13 @@ const App = () => {
   const projects = [
     {
       id: 1,
-      title: "Pizza Sales Analytics",
+      title: "Pizza Delivery Efficiency Analysis",
       category: "Data Analysis",
       description: "End-to-end analysis for a pizza restaurant case study. Performed data cleaning with Pandas, conducted EDA to identify purchasing patterns, and created visualizations to support business decision-making.",
       tags: ["Python", "Excel", "EDA", "Visualization"],
       focus: "Business Insights",
       icon: <BarChart3 size={24} />,
-      link: "#" 
+      link: "https://github.com/Muiz-Isman/Pizza-Delivery-Efficiency-Analysis.git" 
     },
     {
       id: 2,
