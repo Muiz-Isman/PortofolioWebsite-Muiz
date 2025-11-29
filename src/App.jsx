@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion'; // Tambah AnimatePresence
 import { 
   BarChart3, 
   Database, 
@@ -8,13 +8,17 @@ import {
   Mail, 
   Github, 
   Linkedin, 
+  Table,
   ChevronDown,
+  ChevronLeft, // Icon Baru untuk slider kiri
+  ChevronRight, // Icon Baru untuk slider kanan
   Terminal,
   FileSpreadsheet,
   Layout,
   Mic,
   Briefcase,
-  Download // Added import
+  Download,
+  TrendingUp // Icon Baru untuk project Aviation
 } from 'lucide-react';
 
 // --- ANIMATION VARIANTS ---
@@ -49,19 +53,22 @@ const itemFadeIn = {
 // 1. Project Card (Interactive State)
 const ProjectCard = ({ project, isActive, onHover }) => (
   <motion.div 
-    variants={itemFadeIn}
-    onMouseEnter={() => onHover(project.id)} // Trigger pindah aktif saat di-hover
+    layout // Tambahkan properti layout agar animasi smooth saat geser
+    initial={{ opacity: 0, x: 20 }}
+    animate={{ opacity: 1, x: 0 }}
+    exit={{ opacity: 0, x: -20 }}
+    transition={{ duration: 0.4 }}
+    onMouseEnter={() => onHover(project.id)} 
     className={`
-      relative rounded-2xl p-6 flex flex-col justify-between h-full transition-all duration-300 cursor-default
+      relative rounded-2xl p-6 flex flex-col justify-between h-full transition-all duration-300 cursor-default w-full
       ${isActive 
-        ? "bg-[#F3EAE0] border border-[#212842] shadow-[6px_6px_0px_0px_#212842] scale-[1.02]" // STYLE AKTIF (Pop out)
-        : "bg-[#F3EAE0]/50 border border-[#212842]/20 shadow-none scale-100 opacity-80 hover:opacity-100" // STYLE PASIF (Flat)
+        ? "bg-[#F3EAE0] border border-[#212842] shadow-[6px_6px_0px_0px_#212842] scale-[1.02]" 
+        : "bg-[#F3EAE0]/50 border border-[#212842]/20 shadow-none scale-100 opacity-80 hover:opacity-100" 
       }
     `}
   >
     <div>
       <div className="flex justify-between items-start mb-4">
-        {/* Icon: Gelap jika aktif, Pudar jika tidak */}
         <div className={`
           p-3 rounded-xl border transition-colors duration-300
           ${isActive 
@@ -92,7 +99,6 @@ const ProjectCard = ({ project, isActive, onHover }) => (
     <div>
       <div className="flex flex-wrap gap-2 mt-auto">
         {project.tags.map((tag, i) => (
-          // Tags: Filled jika aktif, Outline jika tidak
           <span key={i} className={`
             px-3 py-1 rounded-full text-xs font-bold transition-colors duration-300 border
             ${isActive 
@@ -131,7 +137,7 @@ const ExperienceRow = ({ role, org, period, desc }) => (
 const SkillBadge = ({ icon: Icon, name, index, isActive, onHover }) => (
   <motion.div 
     variants={itemFadeIn}
-    onMouseEnter={() => onHover(index)} // Trigger pindah aktif
+    onMouseEnter={() => onHover(index)} 
     className={`
       flex items-center gap-2 px-4 py-3 rounded-xl border-2 transition-all duration-300 cursor-default
       ${isActive 
@@ -151,9 +157,11 @@ const App = () => {
   const [activeFilter, setActiveFilter] = useState('All');
   const [scrolled, setScrolled] = useState(false);
   
-  // STATE BARU: Melacak item mana yang aktif
-  // Default: Project ID 1 dan Skill Index 0 (Python)
-  const [activeProjectId, setActiveProjectId] = useState(1);
+  // STATE BARU: Pagination slider
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 2; // Maksimal 2 project per halaman
+
+  const [activeProjectId, setActiveProjectId] = useState(5); // Default ke project baru (ID 5)
   const [activeSkillIndex, setActiveSkillIndex] = useState(0);
 
   useEffect(() => {
@@ -164,6 +172,16 @@ const App = () => {
 
   // --- DATA ---
   const projects = [
+    {
+      id: 5, // ID Baru
+      title: "US Aviation Recovery Analysis",
+      category: "Business Intelligence", // Masuk kategori BI (saya gabungkan ke Data Analysis di filter nanti)
+      description: "Investigated the 'Operational Rust' phenomenon in US aviation (2017-2022). Developed an interactive Tableau dashboard revealing why flight delays surged.",
+      tags: ["Excel", ,"EDA", "Tableau", "Visualization",],
+      focus: "Operational Strategy",
+      icon: <TrendingUp size={24} />,
+      link: "#" 
+    },
     {
       id: 1,
       title: "Pizza Delivery Efficiency Analysis",
@@ -210,6 +228,7 @@ const App = () => {
     { icon: Code2, name: "Python (Pandas, Matplotlib)" },
     { icon: Database, name: "SQL (JOIN, Aggregation)" },
     { icon: FileSpreadsheet, name: "Excel (Pivot, Lookup)" },
+    { icon: Table, name: "Tableau (Dashboard, Visualization)" },
     { icon: Layout, name: "Figma (UI/UX)" },
     { icon: Terminal, name: "Web (PHP, React, Laravel)" },
     { icon: Mic, name: "Public Speaking" }
@@ -236,12 +255,34 @@ const App = () => {
     }
   ];
 
+  // Logic Filter
   const filteredProjects = activeFilter === 'All' 
     ? projects 
-    : projects.filter(p => p.category === activeFilter);
+    : projects.filter(p => {
+        if (activeFilter === 'Data Analysis') return p.category === 'Data Analysis' || p.category === 'Business Intelligence';
+        return p.category === activeFilter;
+      });
 
-  // Jika filter berubah, reset active project ke item pertama di filter tersebut
+  // Logic Slider/Pagination
+  const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
+  
+  const handleNext = () => {
+    setCurrentPage((prev) => (prev + 1) % totalPages);
+  };
+
+  const handlePrev = () => {
+    setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
+  };
+
+  // Ambil project yang ditampilkan saat ini (hanya 2 biji)
+  const currentProjects = filteredProjects.slice(
+    currentPage * itemsPerPage, 
+    (currentPage + 1) * itemsPerPage
+  );
+
+  // Jika filter berubah, reset halaman ke 0 dan set active project
   useEffect(() => {
+    setCurrentPage(0);
     if (filteredProjects.length > 0) {
       setActiveProjectId(filteredProjects[0].id);
     }
@@ -310,7 +351,6 @@ const App = () => {
               I combine technical skills in Python & SQL with strong communication abilities to bridge the gap between data and decision-making.
             </motion.p>
             
-            {/* --- TOMBOL DIGANTI DI SINI --- */}
             <motion.div variants={fadeInUp} className="flex flex-wrap gap-4">
               <a href="#work" className="px-8 py-4 bg-[#212842] text-[#F3EAE0] rounded-xl font-bold hover:translate-y-[-2px] hover:shadow-[4px_4px_0px_0px_rgba(33,40,66,0.3)] transition-all flex items-center gap-2 group">
                 View Projects
@@ -318,7 +358,7 @@ const App = () => {
               </a>
               
               <a 
-                href= "cv.pdf" // Pastikan file cv.pdf ada di folder public
+                href= "cv.pdf" 
                 download="Muiz_Isman_CV.pdf"
                 className="px-8 py-4 bg-transparent border-2 border-[#212842] text-[#212842] rounded-xl font-bold hover:bg-[#212842] hover:text-[#F3EAE0] transition-all flex items-center gap-2"
               >
@@ -326,7 +366,6 @@ const App = () => {
                 <Download size={20} />
               </a>
             </motion.div>
-            {/* ----------------------------- */}
 
           </motion.div>
         </div>
@@ -348,7 +387,7 @@ const App = () => {
         </motion.div>
       </section>
 
-      {/* Skills (With Default Active Logic) */}
+      {/* Skills */}
       <section className="py-24 px-6">
         <motion.div className="max-w-5xl mx-auto" {...scrollAnimationProps}>
           <motion.div variants={fadeInUp} className="mb-10">
@@ -368,11 +407,11 @@ const App = () => {
         </motion.div>
       </section>
 
-      {/* Projects (With Default Active Logic) */}
+      {/* Projects (Slide / Carousel) */}
       <section id="work" className="py-24 px-6 bg-[#212842]/5">
         <div className="max-w-5xl mx-auto">
           <motion.div 
-            className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6"
+            className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.5 }}
@@ -385,12 +424,13 @@ const App = () => {
               </p>
             </div>
             
-            <div className="flex bg-[#F3EAE0] p-1.5 rounded-xl border border-[#212842]/20">
+            {/* Filter Buttons */}
+            <div className="flex bg-[#F3EAE0] p-1.5 rounded-xl border border-[#212842]/20 overflow-x-auto">
               {['All', 'Data Analysis', 'Web Dev'].map((filter) => (
                 <button
                   key={filter}
                   onClick={() => setActiveFilter(filter)}
-                  className={`px-5 py-2 rounded-lg text-sm font-bold transition-all ${
+                  className={`px-4 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap ${
                     activeFilter === filter 
                       ? 'bg-[#212842] text-[#F3EAE0] shadow-md' 
                       : 'text-[#212842]/60 hover:text-[#212842] hover:bg-[#212842]/10'
@@ -402,16 +442,62 @@ const App = () => {
             </div>
           </motion.div>
 
-          <motion.div key={activeFilter} className="grid grid-cols-1 md:grid-cols-2 gap-8" {...scrollAnimationProps}>
-            {filteredProjects.map((project) => (
-              <ProjectCard 
-                key={project.id} 
-                project={project} 
-                isActive={activeProjectId === project.id}
-                onHover={setActiveProjectId}
-              />
-            ))}
-          </motion.div>
+          {/* Project Slider Container */}
+          <div className="relative min-h-[380px]">
+            <AnimatePresence mode='wait'>
+                <motion.div 
+                  key={currentPage + activeFilter} // Key changed to trigger animation
+                  className="grid grid-cols-1 md:grid-cols-2 gap-8"
+                >
+                  {currentProjects.map((project) => (
+                    <ProjectCard 
+                      key={project.id} 
+                      project={project} 
+                      isActive={activeProjectId === project.id}
+                      onHover={setActiveProjectId}
+                    />
+                  ))}
+                </motion.div>
+            </AnimatePresence>
+            
+            {/* Empty State jika filter kosong */}
+            {currentProjects.length === 0 && (
+              <div className="text-center py-20 text-[#212842]/50 font-bold">
+                No projects found in this category.
+              </div>
+            )}
+          </div>
+
+          {/* Slider Controls (Hanya muncul jika halaman > 1) */}
+          {totalPages > 1 && (
+            <div className="flex justify-center items-center gap-2">
+              <button 
+                onClick={handlePrev}
+                className="p-3 rounded-full border-2 border-[#212842]/10 hover:border-[#212842] hover:bg-[#212842] hover:text-[#F3EAE0] transition-all text-[#212842]"
+              >
+                <ChevronLeft size={24} />
+              </button>
+              
+              <div className="flex gap-2">
+                {Array.from({ length: totalPages }).map((_, idx) => (
+                  <div 
+                    key={idx} 
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      currentPage === idx ? "bg-[#212842] w-6" : "bg-[#212842]/20"
+                    }`}
+                  />
+                ))}
+              </div>
+
+              <button 
+                onClick={handleNext}
+                className="p-3 rounded-full border-2 border-[#212842]/10 hover:border-[#212842] hover:bg-[#212842] hover:text-[#F3EAE0] transition-all text-[#212842]"
+              >
+                <ChevronRight size={24} />
+              </button>
+            </div>
+          )}
+
         </div>
       </section>
 
@@ -460,18 +546,18 @@ const App = () => {
           </motion.p>
           
           <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row justify-center gap-4 mb-16">
-             <a href="mailto:muizisman511@gmail.com" className="flex items-center justify-center gap-2 px-8 py-4 bg-[#F3EAE0] text-[#212842] rounded-full font-bold hover:bg-white transition-all shadow-[0_0_20px_rgba(243,234,224,0.3)] hover:-translate-y-1">
-               <Mail size={18} />
-               muizisman511@gmail.com
-             </a>
-             <a href="https://www.linkedin.com/in/muiz-isman" target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 px-8 py-4 bg-transparent border border-[#F3EAE0]/30 text-[#F3EAE0] rounded-full font-bold hover:bg-[#F3EAE0] hover:text-[#212842] transition-all">
-               <Linkedin size={18} />
-               LinkedIn Profile
-             </a>
-             <a href="https://github.com/Muiz-Isman" target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 px-8 py-4 bg-transparent border border-[#F3EAE0]/30 text-[#F3EAE0] rounded-full font-bold hover:bg-[#F3EAE0] hover:text-[#212842] transition-all">
-               <Github size={18} />
-               GitHub
-             </a>
+              <a href="mailto:muizisman511@gmail.com" className="flex items-center justify-center gap-2 px-8 py-4 bg-[#F3EAE0] text-[#212842] rounded-full font-bold hover:bg-white transition-all shadow-[0_0_20px_rgba(243,234,224,0.3)] hover:-translate-y-1">
+                <Mail size={18} />
+                muizisman511@gmail.com
+              </a>
+              <a href="https://www.linkedin.com/in/muiz-isman" target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 px-8 py-4 bg-transparent border border-[#F3EAE0]/30 text-[#F3EAE0] rounded-full font-bold hover:bg-[#F3EAE0] hover:text-[#212842] transition-all">
+                <Linkedin size={18} />
+                LinkedIn Profile
+              </a>
+              <a href="https://github.com/Muiz-Isman" target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 px-8 py-4 bg-transparent border border-[#F3EAE0]/30 text-[#F3EAE0] rounded-full font-bold hover:bg-[#F3EAE0] hover:text-[#212842] transition-all">
+                <Github size={18} />
+                GitHub
+              </a>
           </motion.div>
           
           <motion.div variants={fadeInUp} className="text-[#F3EAE0]/40 text-sm flex flex-col items-center gap-2">
