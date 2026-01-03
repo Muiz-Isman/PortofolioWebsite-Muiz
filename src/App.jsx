@@ -323,7 +323,7 @@ const App = () => {
             className="text-lg font-bold tracking-tighter flex items-center gap-2 hover:text-[#212842] transition-colors cursor-pointer"
           >
             <div className="w-3 h-3 bg-[#212842] rotate-45"></div>
-            MU'IZ ISMAN
+            M. MU'IZ ISMAN
           </a>
           <div className="hidden md:flex items-center gap-8 text-sm font-bold text-[#212842]/60">
             <a href="#about" className="hover:text-[#212842] transition-colors">About</a>
