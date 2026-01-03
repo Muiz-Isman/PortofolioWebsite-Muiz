@@ -180,7 +180,7 @@ const App = () => {
       tags: ["Excel", ,"EDA", "Tableau", "Visualization",],
       focus: "Operational Strategy",
       icon: <TrendingUp size={24} />,
-      link: "#" 
+      link: "https://github.com/Muiz-Isman/Analysis-of-US-Aviation-Performance-2017-2022.git" 
     },
     {
       id: 1,
@@ -347,8 +347,8 @@ const App = () => {
               <span className="text-[#212842]/60">Clear Narratives.</span>
             </motion.h1>
             <motion.p variants={fadeInUp} className="text-xl text-[#212842]/80 leading-relaxed max-w-2xl mb-10 font-medium">
-              Hi, I'm <b>Muhammad Mu'iz Isman</b>. A 5th-semester Informatics student specializing in Data Analysis. 
-              I combine technical skills in Python & SQL with strong communication abilities to bridge the gap between data and decision-making.
+              Hi, I'm <b>Muhammad Mu'iz Isman</b>. A 6th-semester Informatics student specializing in Data Analysis. 
+              I combine technical skills in Excel, Python, SQL, and Tableau with strong communication abilities to bridge the gap between data and decision-making.
             </motion.p>
             
             <motion.div variants={fadeInUp} className="flex flex-wrap gap-4">
@@ -359,7 +359,7 @@ const App = () => {
               
               <a 
                 href= "cv.pdf" 
-                download="Muiz_Isman_CV.pdf"
+                download="M. Muiz Isman_CV.pdf"
                 className="px-8 py-4 bg-transparent border-2 border-[#212842] text-[#212842] rounded-xl font-bold hover:bg-[#212842] hover:text-[#F3EAE0] transition-all flex items-center gap-2"
               >
                 Download CV
@@ -375,7 +375,7 @@ const App = () => {
       <section className="py-12 px-6 border-y border-[#212842]/10 bg-[#212842]/5">
         <motion.div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8" {...scrollAnimationProps}>
           {[
-            { label: "Semester", value: "5th" },
+            { label: "Semester", value: "6th" },
             { label: "Focus", value: "Data Analysis" },
             { label: "Location", value: "Tangerang" }
           ].map((stat, idx) => (
