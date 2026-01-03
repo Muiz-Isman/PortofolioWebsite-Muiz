@@ -343,7 +343,7 @@ const App = () => {
               <span className="text-xs font-bold text-[#212842] tracking-wide uppercase">Data Analyst & CS Student</span>
             </motion.div>
             <motion.h1 variants={fadeInUp} className="text-5xl md:text-7xl font-black tracking-tight text-[#212842] mb-8 leading-[1.1]">
-              Translating Data intooo <br/>
+              Translating Data into <br/>
               <span className="text-[#212842]/60">Clear Narratives.</span>
             </motion.h1>
             <motion.p variants={fadeInUp} className="text-xl text-[#212842]/80 leading-relaxed max-w-2xl mb-10 font-medium">
