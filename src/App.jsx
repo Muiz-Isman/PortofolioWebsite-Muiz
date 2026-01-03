@@ -359,7 +359,7 @@ const App = () => {
               
               <a 
                 href= "cv.pdf" 
-                download="M. Muiz Isman_CV.pdf"
+                download="Muhammad Mu'iz Isman_CV.pdf"
                 className="px-8 py-4 bg-transparent border-2 border-[#212842] text-[#212842] rounded-xl font-bold hover:bg-[#212842] hover:text-[#F3EAE0] transition-all flex items-center gap-2"
               >
                 Download CV
